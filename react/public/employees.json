@@ -1,0 +1,48 @@
+{
+  "employees": [
+    {
+      "id": 1,
+      "name": "Hart Hagerty",
+      "position": "Technical Support",
+      "team": "IT/Development",
+      "date": "10/11/2023",
+      "clockin": "10:00",
+      "clockout": "18:00",
+      "worktime": "08:00",
+      "productive": "06:00"
+    },
+    {
+      "id": 2,
+      "name": "Brice Swyre",
+      "position": "Software Engineer",
+      "team": "IT/Development",
+      "date": "10/11/2023",
+      "clockin": "10:00",
+      "clockout": "18:00",
+      "worktime": "08:00",
+      "productive": "06:00"
+    },
+    {
+      "id": 3,
+      "name": "Marjy Ferencz",
+      "position": "Associate Sotware Engineer",
+      "team": "IT/Development",
+      "date": "10/11/2023",
+      "clockin": "10:00",
+      "clockout": "18:00",
+      "worktime": "08:00",
+      "productive": "06:00"
+    },
+    {
+      "id": 4,
+      "name": "Yancy Tear",
+      "position": "Recruiter",
+      "team": "Human Resources",
+      "date": "10/11/2023",
+      "clockin": "10:00",
+      "clockout": "18:00",
+      "worktime": "08:00",
+      "productive": "06:00"
+    }
+  ]
+}

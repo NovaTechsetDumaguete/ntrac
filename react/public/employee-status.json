@@ -1,0 +1,52 @@
+{
+  "employees": [
+    {
+      "employeeId": 1,
+      "name": "Kenneth Camacho",
+      "status": "Active",
+      "online": "Now"
+    },
+    {
+      "employeeId": 2,
+      "name": "Rickne Lim",
+      "status": "Active",
+      "online": "Now"
+    },
+    {
+      "employeeId": 3,
+      "name": "Rainehear Cajes",
+      "status": "Break",
+      "online": "3 minutes ago"
+    },
+    {
+      "employeeId": 4,
+      "name": "Ramon Tuble",
+      "status": "Break",
+      "online": "5 minutes ago"
+    },
+    {
+      "employeeId": 5,
+      "name": "Jed Zerna",
+      "status": "Active",
+      "online": "Now"
+    },
+    {
+      "employeeId": 6,
+      "name": "Kury Weyne Gaso",
+      "status": "Break",
+      "online": "10 minutes ago"
+    },
+    {
+      "employeeId": 7,
+      "name": "Dave Omandam",
+      "status": "Inactive",
+      "online": "3 hours ago"
+    },
+    {
+      "employeeId": 8,
+      "name": "Daisy Lago",
+      "status": "Active",
+      "online": "Now"
+    }
+  ]
+}
