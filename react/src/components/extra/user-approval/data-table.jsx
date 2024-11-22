@@ -17,29 +17,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  TableRowSingle,
 } from "@ui/table";
 
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
-import moment from "moment";
-
-const CellBgColor = (cell) => {
-  let now = moment().format("dddd").toLowerCase();
-  if (cell === "saturday" || cell === "sunday") {
-    return "bg-gray-100 border-r";
-  }
-  if (cell === now) {
-    return "bg-blue-100 border-b border-blue-200";
-  }
-  return "border-r";
-};
 
 export function DataTable({ columns, data }) {
   const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] = React.useState({
-    sunday: false,
-  });
+  const [columnVisibility, setColumnVisibility] = React.useState({});
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [sorting, setSorting] = React.useState([]);
 
@@ -51,9 +36,6 @@ export function DataTable({ columns, data }) {
       columnVisibility,
       rowSelection,
       columnFilters,
-    },
-    initialState: {
-      pagination: { pageSize: 5 },
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
@@ -91,31 +73,24 @@ export function DataTable({ columns, data }) {
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody className="text-center">
+          <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => {
-                return (
-                  <TableRowSingle
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    className="h-20"
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        className={`hover:bg-muted/50 ${CellBgColor(
-                          cell.column.columnDef.accessorKey
-                        )}`}
-                        key={cell.id}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRowSingle>
-                );
-              })
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.original.status === "Pending" && "selected"}
+                  // className={row.original.status == "Pending" && "font-bold"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
             ) : (
               <TableRow>
                 <TableCell

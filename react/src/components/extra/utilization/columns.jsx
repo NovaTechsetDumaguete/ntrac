@@ -17,8 +17,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import "./../../../main.scss";
 import { PopoverHelper } from "@/components/layout/popover-helper";
-import { Loader } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export const statuses = [
   {
@@ -69,44 +67,20 @@ const getStatusStyle = (status) => {
   }
 };
 
-export const LoadingSpinner = ({ className }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={cn("animate-spin", className)}
-    >
-      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-    </svg>
-  );
-};
-
 const StatusIcon = ({ status }) => {
   switch (status) {
-    // case "Present":
-    //   return <CheckCircledIcon className="h-6 w-6 text-green-500" />;
-    // case "Late":
-    //   return <TimerIcon className="h-6 w-6 text-yellow-500" />;
-    // case "Undertime":
-    //   return <LapTimerIcon className="h-6 w-6 text-yellow-500" />;
-    case undefined:
-      return <CircleIcon className="h-8 w-8 text-white-500" />;
+    case "Present":
+      return <CheckCircledIcon className="h-6 w-6 text-green-500" />;
+    case "Late":
+      return <TimerIcon className="h-6 w-6 text-yellow-500" />;
+    case "Undertime":
+      return <LapTimerIcon className="h-6 w-6 text-yellow-500" />;
     case "Holiday":
-      return <SketchLogoIcon className="h-8 w-8 text-blue-500" />;
+      return <SketchLogoIcon className="h-6 w-6 text-blue-500" />;
     case "Absent":
-      return <CrossCircledIcon className="h-8 w-8 text-white-500" />;
-    case "Pending":
-      return <LoadingSpinner className={"h-8 w-8 text-slate-600"} />;
+      return <CrossCircledIcon className="h-6 w-6 text-red-500" />;
     default:
-      return status;
-    // <Loader className="h-6 w-6 text-gray" />
+      return <CircleIcon className="h-6 w-6 text-gray-500" />;
   }
 };
 
@@ -125,24 +99,23 @@ export const columns = () => [
     ),
     cell: ({ row }) => {
       let status = row.original.status;
-      let { first, last, id } = row.original.employee;
-      let initials = `${first[0]}${last[0]}`;
-      let name = row.original.name;
+      let firstName = row.original.firstName;
+      let lastName = row.original.lastName;
       return (
-        <div className="flex space-x-2 max-w-80 ml-4 items-center">
+        <div className="flex space-x-2 ml-4 items-center">
           <div className={`avatar ${status?.toLowerCase()}`}>
             <Avatar className={`h-10 w-10 border-2 ${getStatusStyle(status)}`}>
               <AvatarImage
                 // src={`/images/${row.original.employeeId}.png`}
-                src={getImage(id)}
+                src={getImage(row.original.employeeId)}
                 alt="Avatar"
               />
               <AvatarFallback className="font-semi-bold">
-                {initials}
+                {`${firstName[0]}${lastName[0]}`}
               </AvatarFallback>
             </Avatar>
           </div>
-          <div className="flex">{name}</div>
+          <div className="flex">{row.getValue("name")}</div>
         </div>
       );
     },
@@ -161,7 +134,7 @@ export const columns = () => [
     cell: () => {
       return (
         <div className="flex justify-center">
-          <span className="max-w-[80px] truncate font-medium text-lg"></span>
+          <span className="max-w-[80px] truncate font-medium"></span>
         </div>
       );
     },
@@ -178,7 +151,7 @@ export const columns = () => [
     cell: ({ row }) => {
       return (
         <div className="flex justify-center">
-          <span className="max-w-[80px] truncate font-medium text-lg">
+          <span className="max-w-[80px] truncate font-medium">
             <StatusIcon status={row.getValue("monday")} />
           </span>
         </div>
@@ -200,7 +173,7 @@ export const columns = () => [
           id={row.original.id}
           cell={
             <div className="flex justify-center cursor-pointer">
-              <span className="max-w-[80px] truncate font-medium text-lg">
+              <span className="max-w-[80px] truncate font-medium">
                 <StatusIcon status={row.getValue("tuesday")} />
               </span>
             </div>
@@ -221,7 +194,7 @@ export const columns = () => [
     cell: ({ row }) => {
       return (
         <div className="flex justify-center">
-          <span className="max-w-[80px] truncate font-medium text-lg">
+          <span className="max-w-[80px] truncate font-medium">
             <StatusIcon status={row.getValue("wednesday")} />
           </span>
         </div>
@@ -240,7 +213,7 @@ export const columns = () => [
     cell: ({ row }) => {
       return (
         <div className="flex justify-center">
-          <span className="max-w-[80px] truncate font-medium text-lg">
+          <span className="max-w-[80px] truncate font-medium">
             <StatusIcon status={row.getValue("thursday")} />
           </span>
         </div>
@@ -259,7 +232,7 @@ export const columns = () => [
     cell: ({ row }) => {
       return (
         <div className="flex justify-center">
-          <span className="max-w-[80px] truncate font-medium text-lg">
+          <span className="max-w-[80px] truncate font-medium">
             <StatusIcon status={row.getValue("friday")} />
           </span>
         </div>
@@ -278,7 +251,7 @@ export const columns = () => [
     cell: () => {
       return (
         <div className="flex justify-center">
-          <span className="max-w-[80px] truncate font-medium text-lg"></span>
+          <span className="max-w-[80px] truncate font-medium"></span>
         </div>
       );
     },
