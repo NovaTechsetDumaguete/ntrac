@@ -43,7 +43,7 @@ const Logout = () => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Avatar className="h-9 w-9 border-black-500 border cursor-pointer">
+          <Avatar className="h-9 w-9 border-black-500 border">
             <AvatarImage src="/avatars/01.png" alt="Admin" />
             <AvatarFallback>
               {/* {localStorage.getItem("SESSION_NAME").slice(0, 1)} */}
@@ -51,7 +51,7 @@ const Logout = () => {
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56 mx-8">
+        <DropdownMenuContent className="w-56">
           <DropdownMenuLabel>
             {/* {localStorage.getItem("SESSION_NAME")} */}
             {user ? user?.name : "Unknown"}

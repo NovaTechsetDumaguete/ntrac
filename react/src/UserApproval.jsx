@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import axiosClient from "./lib/axios-client";
 import moment from "moment";
 
-const Teams = () => {
+const UserApproval = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -20,6 +20,7 @@ const Teams = () => {
             name: `${item.first_name} ${item.last_name}`,
             status: item.status,
             requestedOn: moment(item.created_at).format("YYYY-MM-DD"),
+            id: item.id,
           });
         });
         setData(tmpData);
@@ -48,4 +49,4 @@ const Teams = () => {
   );
 };
 
-export default Teams;
+export default UserApproval;

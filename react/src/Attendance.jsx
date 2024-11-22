@@ -17,7 +17,7 @@ import { useStateContext } from "./context/ContextProvider";
 
 const CUTOFF_TIME = moment("12:00:00", "HH:mm");
 
-const PaginationContext = createContext(10);
+const PaginationContext = createContext(5);
 
 const Attendance = () => {
   const { date } = useDashboardContext();

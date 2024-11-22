@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const StateContext = createContext({
   currentUser: null,
@@ -6,16 +6,14 @@ const StateContext = createContext({
   token: null,
   notification: null,
   processedFile: null,
-  waitingForApprovalCount: 0, 
-  setUser: () => {},
-  setToken: () => {},
-  setNotification: () => {},
-  setFilterString: () => {},
-  setEmployees: () => {},
-  setTeams: () => {},
-  setCurrentTeam: () => {},
-  setProcessedFile: () => {},
-  setWaitingForApprovalCount: () => {},
+  setUser: () => { },
+  setToken: () => { },
+  setNotification: () => { },
+  setFilterString: () => { },
+  setEmployees: () => { },
+  setTeams: () => { },
+  setCurrentTeam: () => { },
+  setProcessedFile: () => { },
 });
 
 export const ContextProvider = ({ children }) => {
@@ -26,8 +24,7 @@ export const ContextProvider = ({ children }) => {
   const [employees, setEmployees] = useState({});
   const [teams, setTeams] = useState([]);
   const [currentTeam, setCurrentTeam] = useState(null);
-  const [processedFile, setProcessedFile] = useState({});
-  const [waitingForApprovalCount, setWaitingForApprovalCount] = useState(0);
+  const [processedFile, setProcessedFile] = useState({})
 
   const setToken = (token) => {
     _setToken(token);
@@ -69,8 +66,6 @@ export const ContextProvider = ({ children }) => {
         setCurrentTeam,
         processedFile,
         setProcessedFile,
-        waitingForApprovalCount, 
-        setWaitingForApprovalCount, 
       }}
     >
       {children}

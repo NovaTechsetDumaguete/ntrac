@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { Bell, Menu, Search, CircleUser } from "lucide-react";
@@ -14,8 +14,8 @@ import {
 import { Input } from "@ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@ui/sheet";
 
-import { Sidebar } from "./extra/sidebar";
 import { UserSidebar } from "./extra/usersidebar";
+import { Sidebar } from "./extra/sidebar";
 
 export const description =
   "A products dashboard with a sidebar navigation and a main content area. The dashboard has a header with a search input and a user menu. The sidebar has a logo, navigation links, and a card with a call to action. The main content area shows an empty state with a call to action.";
@@ -31,15 +31,7 @@ const TopbarHome = () => {
         {/* <Package2 className="h-6 w-6" /> */}
         <img src={"/nt-logo.png"} className="h-6" alt="NT-Logo" />
         <span className="ml-1 hidden font-bold sm:inline-block">nTrac</span>
-        {localStorage.getItem("USERTYPE") === "USER" ? (
-          <>
-            <span className="hidden font-normal sm:inline-block">User</span>
-          </>
-        ) : (
-          <>
-            <span className="hidden font-normal sm:inline-block">Admin</span>
-          </>
-        )}
+        <span className="hidden font-normal sm:inline-block">User</span>
       </Link>
       <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
         <Bell className="h-4 w-4" />
@@ -49,19 +41,13 @@ const TopbarHome = () => {
   );
 };
 
-export default function BlockLayout({ children }) {
+export default function UserBlockLayout({ children }) {
   const location = useLocation();
-  const navigate = useNavigate();
   useEffect(() => setCurrentRoute(location.pathname), [location]);
   const [currentRoute, setCurrentRoute] = useState("");
   // const [isCollapsed, setIsCollapsed] = useState(false);
   const isCollapsed = false;
   const [open, setOpen] = useState(false);
-  const logout = () => {
-    console.log("Logout");
-    localStorage.clear();
-    window.location.reload();
-  };
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -111,12 +97,7 @@ export default function BlockLayout({ children }) {
               </Link>
             </nav>
           </div> */}
-          {localStorage.getItem("USERTYPE") === "ADMIN" ? (
-            <Sidebar />
-          ) : (
-            <UserSidebar />
-          )}
-
+          <UserSidebar />
           {/* <div className="mt-auto p-4">
             <Card x-chunk="A card with a call to action">
               <CardHeader className="p-2 pt-0 md:p-4">
@@ -243,7 +224,7 @@ export default function BlockLayout({ children }) {
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+              <DropdownMenuItem>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>

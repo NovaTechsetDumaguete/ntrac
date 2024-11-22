@@ -5,7 +5,6 @@ import {
   createContext,
   useEffect,
 } from "react";
-
 import { columns } from "@/components/extra/utilization/columns";
 import { DataTable } from "@/components/extra/utilization/data-table";
 import { v4 as uuidv4 } from "uuid";
@@ -13,7 +12,7 @@ import axiosClient from "./lib/axios-client";
 import moment from "moment";
 import { useDashboardContext } from "@/context/DashboardContextProvider";
 import { useQuery } from "@tanstack/react-query";
-// import { getLastActivity } from "./Employees";
+import { getLastActivity } from "./Employees";
 import { useStateContext } from "./context/ContextProvider";
 
 const CUTOFF_TIME = moment("12:00:00", "HH:mm");
@@ -24,23 +23,14 @@ const Utilization = () => {
   const { date } = useDashboardContext();
   const { currentTeam } = useStateContext();
 
-  function rand(min, max) {
-    let decimal = Math.random();
-    return parseFloat(
-      Math.floor(Math.random() * (max - min + 1)) + min + decimal
-    ).toFixed(2);
-  }
-
   const getDayStatus = useCallback(
     (dayOfWeek) => {
       let now = moment().day();
-      if (moment(date).year() > moment().year()) return;
-
-      if (moment(date).week() > moment().week()) return;
-
-      if (dayOfWeek < now) return "Absent";
-
-      return null;
+      return dayOfWeek < now ||
+        moment(date).week() < moment().week() ||
+        moment(date).year() < moment().year()
+        ? "Absent"
+        : null;
     },
     [date]
   );
@@ -48,12 +38,10 @@ const Utilization = () => {
   const [pagination, setPagination] = useState(PaginationContext);
 
   const dailyAttendance = (data) => {
-    if (data.productivity === "pending") return "Pending";
-    let { productive_duration, neutral_duration } = data.productivity;
-
-    return parseFloat((productive_duration + neutral_duration) / 3600).toFixed(
-      2
-    );
+    if (moment(data.timein, "HH:mm").isAfter(CUTOFF_TIME)) {
+      return "Late";
+    }
+    return "Present";
   };
 
   const { data, isLoading } = useQuery({
@@ -61,7 +49,7 @@ const Utilization = () => {
     queryFn: () =>
       axiosClient
         .get(
-          `/utilization/weekly/${moment(date).format(
+          `/attendance/weekly/${moment(date).format(
             "YYYY-MM-DD"
           )}/${currentTeam}`
         )
@@ -73,18 +61,12 @@ const Utilization = () => {
             );
             formatData.push({
               id: uuidv4(),
-              employee: {
-                id: emp.id,
-                first: emp.first_name,
-                last: emp.last_name,
-              },
-              name: `${emp.last_name}, ${emp.first_name}`,
+              employeeId: emp.id,
+              name: `${emp.first_name} ${emp.last_name}`,
+              firstName: emp.first_name,
+              lastName: emp.last_name,
               status: emp.active_status,
-              // name: `${emp.first_name} ${emp.last_name}`,
-              // firstName: emp.first_name,
-              // lastName: emp.last_name,
-              // status: emp.active_status,
-              // online: getLastActivity(emp.last_activity),
+              online: getLastActivity(emp.last_activity),
               attendance: filterByEmployee,
               holidays: ["2024-01-01"],
             });
@@ -118,8 +100,6 @@ const Utilization = () => {
               });
             }
 
-            delete item.attendance;
-            delete item.holidays;
             formData.push({ ...item, ...days });
           });
           return formData;
@@ -132,8 +112,6 @@ const Utilization = () => {
   useEffect(() => {
     setPagination(PaginationContext);
   }, []);
-
-  // console.log(data, "data");
 
   return (
     <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">

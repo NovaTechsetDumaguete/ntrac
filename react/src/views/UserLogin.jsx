@@ -1,7 +1,7 @@
 import axiosClient from "../lib/axios-client.js";
 import { createRef, useState } from "react";
 import { useStateContext } from "../context/ContextProvider.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button.jsx";
 
 import {
@@ -34,7 +34,7 @@ const ErrorAlert = ({ alertOpen, setAlertOpen, message }) => {
   );
 };
 
-export default function Login() {
+export default function UserLogin() {
   const emailRef = createRef();
   const passwordRef = createRef();
   const { setUser, setToken, setCurrentTeam, setTeams } = useStateContext();
@@ -44,23 +44,29 @@ export default function Login() {
   const [looding, setLooding] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
 
+  const navigate = useNavigate();
   const onSubmit = (ev) => {
     ev.preventDefault();
+
+    // localStorage.setItem("USERTYPE", "USER");
     setLooding(true);
     axiosClient
-      .post("/login", {
+      .post("/app-login", {
         email: emailRef.current.value,
         password: passwordRef.current.value,
       })
       .then(({ data }) => {
+        console.log("data.user: ", data.user);
+        console.log("data.email: ", data.user.email);
+        navigate("/userdashboard");
         setUser(data.user);
         setToken(data.token);
-        setCurrentTeam(data.teams[0].id);
-        setTeams(data.teams);
+        setCurrentTeam(data.team_id);
         localStorage.setItem("SESSION_EMAIL", data.user.email);
         localStorage.setItem("USERID", data.user.id);
         localStorage.removeItem("USERTYPE");
-        localStorage.setItem("USERTYPE", "ADMIN");
+        localStorage.setItem("USERTYPE", "USER");
+        // setTeams(data.teams);
       })
       .then(() => setLooding(false))
       .catch((err) => {
@@ -99,7 +105,7 @@ export default function Login() {
       <div className="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
         <div className="flex-col flex  self-center p-10 sm:max-w-5xl xl:max-w-2xl  z-10">
           <div className="self-start hidden lg:flex flex-col  text-white">
-            <h1 className="mb-3 font-bold text-5xl">Welcome to Admin Page</h1>
+            <h1 className="mb-3 font-bold text-5xl">Welcome to User Page</h1>
             <p className="pr-3">
               A strong team can take any crazy vision and turn it into reality.
             </p>

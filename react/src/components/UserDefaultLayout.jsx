@@ -11,7 +11,7 @@ import BlockLayout from "./BlockLayout";
 import UserBlockLayout from "./UserBlockLayout";
 // import { echoInstance } from '@/lib/echo';
 
-export default function DefaultLayout() {
+export default function UserDefaultLayout() {
   const { token, setUser } = useStateContext();
   const location = useLocation();
 
@@ -38,21 +38,12 @@ export default function DefaultLayout() {
     );
   }
 
-  // if (localStorage.getItem("USERTYPE") === "USER") {
-  //   return (
-  //     <UserBlockLayout>
-  //       <Outlet />
-  //       <Toaster />
-  //     </UserBlockLayout>
-  //   );
-  // } else {
   return (
-    <BlockLayout>
+    <UserBlockLayout>
       <Outlet />
       <Toaster />
-    </BlockLayout>
+    </UserBlockLayout>
   );
-  // }
 
   // return (
   //   <div className="md:block">

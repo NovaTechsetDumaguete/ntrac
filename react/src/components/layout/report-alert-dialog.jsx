@@ -39,7 +39,6 @@ import {
 } from "@ui/select";
 import { Checkbox } from "@ui/checkbox";
 import { useStateContext } from "@/context/ContextProvider";
-import { ScrollArea } from "../ui/scroll-area";
 
 const IDLE_APPS = ["Windows Default Lock Screen", "Task Switching", "Desktop"];
 
@@ -90,11 +89,11 @@ const getTotalWorkedKuno = (timein, timeout, data) => {
     !moment(timein).isSame(moment(), "day") && timeout === null
       ? data[data.length - 1].time
       : moment(timeout, "HH:mm:ss").diff(
-          moment(timein, "HH:mm:ss"),
-          "seconds"
-        ) > 0
-      ? timeout
-      : "23:59:59";
+        moment(timein, "HH:mm:ss"),
+        "seconds"
+      ) > 0
+        ? timeout
+        : "23:59:59";
   let diff =
     moment(timein).isSame(moment(), "day") && timeout === null
       ? moment().diff(moment(timein, "HH:mm:ss"), "seconds")
@@ -186,12 +185,11 @@ export const formatExcelData = (data, module) => {
   }
 };
 
-export const
-AlertDialogTemplate = ({
+export const AlertDialogTemplate = ({
   open,
   setDialogOpen,
   module = "attendance",
-  handleClickHist,
+  handleClickHist
 }) => {
   const [employees, setEmployees] = useState([]);
   const { currentTeam } = useStateContext();
@@ -207,7 +205,8 @@ AlertDialogTemplate = ({
     setPeriod(period);
     setDisabledDate(period !== "custom");
   };
-//*
+
+
   const onSubmit = (data) => {
     setDialogOpen(false);
     let from = moment(dateRange.from).format("YYYY-MM-DD");
@@ -219,44 +218,38 @@ AlertDialogTemplate = ({
           .get(`/reports/${module}/${from}/${to}`, {
             params: {
               employees: data.employees,
-              teamId: currentTeam,
+              teamId: currentTeam
             },
           })
           .then((resp) => resolve(resp))
-        //  .then((resp) => {
-        //   console.log("API Response: ===>", resp.data); // Log API response
-        //   resolve(resp);
-        // })
           .catch((err) => reject(err));
       });
-//*
-    if (module === "tracking") {
+
+    if (module === 'tracking') {
       toast.promise(promise, {
-        loading: "Generating reports data...",
+        loading: 'Generating reports data...',
         success: (resp) => `Files downloaded.`,
         error: (err) => {
-          console.log(err);
-          return "Processing...";
+          console.log(err)
+          return 'Processing...'
         },
         action: {
-          label: "Show",
+          label: 'Show',
           onClick: () => {
-            handleClickHist();
-            console.log("should redirect to export history page");
-          },
-        },
-      });
+            handleClickHist()
+            console.log('should redirect to export history page')
+          }
+        }
+      })
 
-      setTimeout(() => handleClickHist(), 1500);
+      setTimeout(() => handleClickHist(), 1500)
       return;
     }
 
     toast.promise(promise, {
       loading: "Generating reports data...",
       success: ({ data }) => {
-        const formattedData = formatExcelData(data.data, module);
-        //*
-        //console.log("Formatted Data: ===>", formattedData);
+        const formattedData = formatExcelData(data.data, module)
         const worksheet = XLSX.utils.json_to_sheet(formattedData);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, moduleName);
@@ -290,18 +283,13 @@ AlertDialogTemplate = ({
   }, [currentTeam]);
 
   return (
-    <AlertDialog
-      open={open}
-      onOpenChange={setDialogOpen}
-      className="max-h-[700px] overflow-auto"
-    >
+    <AlertDialog open={open} onOpenChange={setDialogOpen}>
       <Form {...form}>
         <form
           className="w-2/3 space-y-6"
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <AlertDialogTrigger asChild></AlertDialogTrigger>
-
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>
@@ -309,7 +297,6 @@ AlertDialogTemplate = ({
                   "Are you absolutely sure?"}
               </AlertDialogTitle>
             </AlertDialogHeader>
-
             <FormField
               control={form.control}
               name="date"
@@ -356,76 +343,74 @@ AlertDialogTemplate = ({
                 </FormItem>
               )}
             />
-            <ScrollArea className="max-h-[300px]">
-              <FormField
-                control={form.control}
-                name="employees"
-                render={({ field }) => (
-                  <FormItem className="mt-2">
-                    <div className="mb-2 ">
-                      <FormLabel className="text-base font-semibold">
-                        Employees
-                      </FormLabel>
-                    </div>
-                    <div className="flex flex-row items-start space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value.length === employees.length}
-                          onCheckedChange={(checked) => {
-                            form.setValue(
-                              "employees",
-                              checked ? employees.map(({ id }) => id) : []
-                            );
-                          }}
-                        />
-                      </FormControl>
-                      <FormLabel className="font-normal">
-                        {field.value.length === employees.length
-                          ? "Unselect All"
-                          : "Select All"}
-                      </FormLabel>
-                    </div>
-                    {employees.map((employee) => (
-                      <FormField
-                        key={employee.id}
-                        control={form.control}
-                        name="employees"
-                        render={({ field }) => {
-                          return (
-                            <FormItem
-                              key={employee.id}
-                              className="flex flex-row items-start space-x-3 space-y-0"
-                            >
-                              <FormControl>
-                                <Checkbox
-                                  checked={field.value?.includes(employee.id)}
-                                  onCheckedChange={(checked) => {
-                                    return checked
-                                      ? field.onChange([
-                                          ...field.value,
-                                          employee.id,
-                                        ])
-                                      : field.onChange(
-                                          field.value?.filter(
-                                            (value) => value !== employee.id
-                                          )
-                                        );
-                                  }}
-                                />
-                              </FormControl>
-                              <FormLabel className="font-normal">
-                                {employee.last_name} {employee.first_name}
-                              </FormLabel>
-                            </FormItem>
+            <FormField
+              control={form.control}
+              name="employees"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="mb-4">
+                    <FormLabel className="text-base font-semibold">
+                      Employees
+                    </FormLabel>
+                  </div>
+                  <div className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value.length === employees.length}
+                        onCheckedChange={(checked) => {
+                          form.setValue(
+                            "employees",
+                            checked ? employees.map(({ id }) => id) : []
                           );
                         }}
                       />
-                    ))}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </ScrollArea>
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      {field.value.length === employees.length
+                        ? "Unselect All"
+                        : "Select All"}
+                    </FormLabel>
+                  </div>
+                  {employees.map((employee) => (
+                    <FormField
+                      key={employee.id}
+                      control={form.control}
+                      name="employees"
+                      render={({ field }) => {
+                        return (
+                          <FormItem
+                            key={employee.id}
+                            className="flex flex-row items-start space-x-3 space-y-0"
+                          >
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(employee.id)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([
+                                      ...field.value,
+                                      employee.id,
+                                    ])
+                                    : field.onChange(
+                                      field.value?.filter(
+                                        (value) => value !== employee.id
+                                      )
+                                    );
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {employee.last_name} {employee.first_name}
+                            </FormLabel>
+                          </FormItem>
+                        );
+                      }}
+                    />
+                  ))}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <AlertDialogFooter
               style={{
                 diplay: "flex",

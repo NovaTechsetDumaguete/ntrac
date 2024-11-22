@@ -17,23 +17,21 @@ import { useQuery } from "@tanstack/react-query";
 // import { useEffect } from 'react';
 // import { Button } from "@/components/ui/button";
 
-import Echo from 'laravel-echo';
+import Echo from "laravel-echo";
 
-import Pusher from 'pusher-js';
-window.Pusher = Pusher;
+// import Pusher from 'pusher-js';
+// window.Pusher = Pusher;
 
-window.Echo = new Echo({
-  broadcaster: 'reverb',
-  key: import.meta.env.VITE_REVERB_APP_KEY,
-  wsHost: import.meta.env.VITE_REVERB_HOST,
-  wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
-  wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
-  forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
-  enabledTransports: ['ws', 'wss'],
-  withoutInterceptors: true,
-});
-
-
+// window.Echo = new Echo({
+//   broadcaster: 'reverb',
+//   key: import.meta.env.VITE_REVERB_APP_KEY,
+//   wsHost: import.meta.env.VITE_REVERB_HOST,
+//   wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
+//   wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
+//   forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
+//   enabledTransports: ['ws', 'wss'],
+//   withoutInterceptors: true,
+// });
 
 const Categorization = () => {
   const { isLoading, isError, data } = useQuery({

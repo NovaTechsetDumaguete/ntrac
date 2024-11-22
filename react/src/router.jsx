@@ -9,12 +9,12 @@ import Dashboard from "./Dashboard.jsx";
 import Employees from "./Employees.jsx";
 import ActivityTracking from "./ActivityTracking";
 import Attendance from "./Attendance";
-import TransactionApproval from "./TransactionApproval";
+import UserApproval from "./UserApproval";
 import Report from "./Report";
 import Categorization from "./Categorization";
 import Utilization from "./Utilization";
-//import { DashboardBlock } from "./DashboardBlock";
-import Teams from "./Teams";
+import UserLogin from "./views/UserLogin";
+import UserDashboard from "./UserDashboard";
 
 const router = createBrowserRouter([
   {
@@ -28,7 +28,6 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <Dashboard />,
-        // element: <DashboardBlock />
       },
       {
         path: "/employees",
@@ -44,15 +43,15 @@ const router = createBrowserRouter([
       },
       {
         path: "/teams",
-        element: <Teams />,
+        element: <Attendance />,
       },
       {
         path: "/attendance",
         element: <Attendance />,
       },
       {
-        path: "/transaction-approval",
-        element: <TransactionApproval />,
+        path: "/user-approval",
+        element: <UserApproval />,
       },
       {
         path: "/categorization",
@@ -65,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: "/reports",
         element: <Report />,
+      },
+      {
+        path: "/userdashboard",
+        element: <UserDashboard />,
       },
     ],
   },
@@ -79,6 +82,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />,
+      },
+      {
+        path: "/userlogin",
+        element: <UserLogin />,
       },
     ],
   },
