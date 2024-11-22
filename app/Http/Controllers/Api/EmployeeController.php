@@ -747,6 +747,30 @@ class EmployeeController extends Controller
         ]);
     }
 
+    public function getAttendance($from, $to = null)
+    {
+        try {
+            $from = $from ?? Carbon::now()->toDateString();
+            $to = $to ?? Carbon::now()->toDateString();
+            $work_hrs = TrackRecords::with('employee')
+                ->whereHas('employee', function ($query) {
+                    $query->whereIn('employee_id', request('employees'));
+                })
+                ->whereBetween('datein', [$from, $to])
+                ->get();
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'message' => 'Internal Server Error!',
+            ], 500);
+        }
+
+        return response()->json([
+            'data' => $work_hrs ?? [],
+            'message' => count($work_hrs) > 0 ? 'Success' : 'Records not found',
+        ]);
+    }
+
     public function getTrackingReport($from, $to = null)
     {
         // try {

@@ -78,6 +78,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Reports & Analytics //* 2
     Route::get('/reports/attendance/{from}/{to?}', [EmployeeController::class, 'getAttendanceReport']);
+    Route::get('/reports/attendance-ensoul/{from}/{to?}', [EmployeeController::class, 'getAttendance']);
     Route::get('/reports/tracking/{from}/{to?}', [EmployeeController::class, 'getTrackingReport']);
     Route::get('/reports/applications/{from}/{to?}', [EmployeeController::class, 'getApplicationReport']);
     Route::get('/reports/bugs', [ReportController::class, 'getBugReports']);
