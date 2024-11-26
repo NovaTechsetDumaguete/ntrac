@@ -5,9 +5,11 @@ import { DataTable } from "@/components/extra/team/data-table";
 import { useEffect, useState } from "react";
 import axiosClient from "./lib/axios-client";
 import moment from "moment";
+import { useStateContext } from "./context/ContextProvider";
 
 const Teams = () => {
   const [data, setData] = useState([]);
+  const { setWaitingForApprovalTeamsCount } = useStateContext()
 
   useEffect(() => {
     axiosClient
@@ -24,6 +26,11 @@ const Teams = () => {
           });
         });
         setData(tmpData);
+        // Calculate the count of users waiting for approval
+      const pendingCount = tmpData.filter((item) => item.status === "Pending").length;
+
+      // Update the count in the context
+      setWaitingForApprovalTeamsCount(pendingCount);
       })
       .catch((err) => console.log(err));
   }, []);

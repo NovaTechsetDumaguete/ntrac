@@ -7,6 +7,7 @@ const StateContext = createContext({
   notification: null,
   processedFile: null,
   waitingForApprovalCount: 0, 
+  waitingForApprovalTeamsCount: 0,
   setUser: () => {},
   setToken: () => {},
   setNotification: () => {},
@@ -16,6 +17,7 @@ const StateContext = createContext({
   setCurrentTeam: () => {},
   setProcessedFile: () => {},
   setWaitingForApprovalCount: () => {},
+  setWaitingForApprovalTeamsCount: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -28,6 +30,7 @@ export const ContextProvider = ({ children }) => {
   const [currentTeam, setCurrentTeam] = useState(null);
   const [processedFile, setProcessedFile] = useState({});
   const [waitingForApprovalCount, setWaitingForApprovalCount] = useState(0);
+  const [waitingForApprovalTeamsCount, setWaitingForApprovalTeamsCount] = useState(0);
 
   const setToken = (token) => {
     _setToken(token);
@@ -71,6 +74,8 @@ export const ContextProvider = ({ children }) => {
         setProcessedFile,
         waitingForApprovalCount, 
         setWaitingForApprovalCount, 
+        waitingForApprovalTeamsCount,
+        setWaitingForApprovalTeamsCount
       }}
     >
       {children}

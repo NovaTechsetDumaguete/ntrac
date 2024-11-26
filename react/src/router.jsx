@@ -15,6 +15,7 @@ import Categorization from "./Categorization";
 import Utilization from "./Utilization";
 //import { DashboardBlock } from "./DashboardBlock";
 import Teams from "./Teams";
+import Analytics from "./Analytics";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
       {
         path: "/reports",
         element: <Report />,
+      },
+      {
+        path: "/analytics",
+        element: <Analytics />,
       },
     ],
   },
