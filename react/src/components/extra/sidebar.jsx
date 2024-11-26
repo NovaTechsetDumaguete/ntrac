@@ -1,28 +1,74 @@
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import axiosClient from "@/lib/axios-client";
 import { Button, buttonVariants } from "@ui/button";
 import { Badge } from "@ui/badge";
 import { Separator } from "@ui/separator";
-
+import { useDashboardContext } from "@/context/DashboardContextProvider"
 import { BarChartIcon, LayersIcon } from "@radix-ui/react-icons";
 import { TeamSwitcher } from "../layout/team-switcher";
 import { useStateContext } from "@/context/ContextProvider";
+import { format } from "date-fns";
 
 export function Sidebar({ className, open, setOpen }) {
   const location = useLocation();
   const [currentRoute, setCurrentRoute] = useState("");
   // const [isCollapsed, setIsCollapsed] = useState(false);
   const isCollapsed = false;
-  const { waitingForApprovalCount, waitingForApprovalTeamsCount } = useStateContext();
+  const {
+    waitingForApprovalCount,
+    waitingForApprovalTeamsCount,
+    setWaitingForApprovalCount,
+    setWaitingForApprovalTeamsCount,
+    currentTeam,
+  } = useStateContext();
+  const { date } = useDashboardContext();
 
   const handleOnClick = () => {
     if (open) {
       setOpen(false);
     }
   };
+   // Fetch waiting for approval count for teams
+   const fetchWaitingForApprovalTeams = async () => {
+    try {
+      const response = await axiosClient.get("/userapproval");
+      const data = response.data.data;
+      const pendingCount = data.filter((item) => item.status === "Pending").length;
+      setWaitingForApprovalTeamsCount(pendingCount);
+    } catch (error) {
+      console.error("Error fetching team approvals:", error);
+    }
+  };
 
+   // Fetch waiting for approval count for transactions
+   const fetchWaitingForApproval = async () => {
+    if (!currentTeam) return;
+    try {
+      const formattedDate = format(date, "yyyy-MM-dd");
+      const response = await axiosClient.get("/viewRequestApprovalWManager", {
+        params: {
+          managerid: currentTeam,
+          date: formattedDate,
+        },
+      });
+      if (response.data && response.data.data) {
+        const pendingCount = response.data.data.filter(
+          (item) => item.status === "Pending"
+        ).length;
+        setWaitingForApprovalCount(pendingCount);
+      }
+    } catch (error) {
+      console.error("Error fetching waiting for approval count:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchWaitingForApprovalTeams();
+    fetchWaitingForApproval();
+  }, [currentTeam, date]); // Trigger when team or date changes
+  
   useEffect(() => setCurrentRoute(location.pathname), [location]);
 
   const navItems = [
