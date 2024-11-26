@@ -190,6 +190,15 @@ export const columns = (refreshData, managerId) => [
     },
   },
   {
+    accessorKey: "date",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Date" />
+    ),
+    cell: ({ row }) => (
+      <div className="w-[100px]">{row.getValue("date")}</div>
+    ),
+  },
+  {
     accessorKey: "start_time",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Start Time" />
