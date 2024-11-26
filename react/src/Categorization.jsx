@@ -40,6 +40,7 @@ const Categorization = () => {
     queryKey: ["categories"],
     queryFn: async () => {
       const res = await axiosClient.get("/categories");
+      // console.log("cat res==>", res)
       let tmpData = [];
       await res.data.data.forEach((item) => {
         tmpData.push({
@@ -59,6 +60,7 @@ const Categorization = () => {
             : null,
         });
       });
+      // console.log("cat tempData=>", tmpData)
       return tmpData;
     },
   });
