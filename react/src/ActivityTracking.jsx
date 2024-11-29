@@ -73,7 +73,7 @@ const ActivityTracking = () => {
 
   useEffect(() => {
     if (!empId) return;
-    setLoading(true);
+    //setLoading(true);
     axiosClient
       .get(
         `/activity/time-log/${empId ?? "0"}/${moment(date).format(
@@ -170,7 +170,7 @@ const ActivityTracking = () => {
           neutral: secondsToHuman(neutralTime),
         }));
       })
-      .then(() => setLoading(false))
+      //.then(() => setLoading(false))
       .catch((err) => console.log(err));
   }, [date, empId]);
 
